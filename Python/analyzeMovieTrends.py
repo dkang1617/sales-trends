@@ -32,10 +32,15 @@ LIMIT 1;
         datetime.date.fromisoformat(selectedDate)
     except Exception as inputError:
         raise Exception("Invalid date.")
+    
     cursor.execute(salesQuery, (selectedDate,))
     salesResult = cursor.fetchone()
-    winningTheaterId = salesResult["theater_id"]
-    winningTheaterSales = salesResult["sales_total"]
+    if salesResult:
+        winningTheaterId = salesResult["theater_id"]
+        winningTheaterSales = salesResult["sales_total"]
+    else:
+        print("There are no datapoints for the given date.")
+        exit()
     
     theaterQuery = """
 SELECT theater_name
