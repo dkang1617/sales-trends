@@ -2,6 +2,7 @@ import psycopg2
 import psycopg2.extras
 import datetime
 import configparser
+import sys
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -40,7 +41,7 @@ LIMIT 1;
         winningTheaterSales = salesResult["sales_total"]
     else:
         print("There are no datapoints for the given date.")
-        exit()
+        sys.exit()
     
     theaterQuery = """
 SELECT theater_name
