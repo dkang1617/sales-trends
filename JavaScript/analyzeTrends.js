@@ -32,22 +32,47 @@ export async function queryTheaters(theater_id) {
     }
 }
 
-async function runScript(){
+async function inputScript(){
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
     });
-    let selectedDate;
-    rl.question(`Enter a date in YYYY-MM-DD format: `, date => {
-        selectedDate = date;
-        rl.close();
+    return new Promise((resolve) => {
+        rl.question("Enter a date in YYYY-MM-DD format: ", (date) => {
+            resolve(date);
+            rl.close();
+        });
     });
-    return selectedDate;
 }
 
-const selectedDate = await runScript();
-// const saleResult = await querySales(selectedDate);
-// const theaterResult = await queryTheaters(saleResult?.theater_id);
-// console.log(`The best selling theater on ${selectedDate} was ${theaterResult} with a revenue of $${saleResult?.salesTotal}.`);
+async function validateDate(date) {
+    const checkDate = new Date(date);
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test(date) && !isNaN(checkDate.getTime());
+}
 
-process.exit(0);
+async function main() {
+    const selectedDate = await inputScript();
+    const isValidDate = await validateDate(selectedDate);
+    
+    if (isValidDate) {
+        try {
+            const saleResult = await querySales(selectedDate);
+            if (saleResult?.theater_id && saleResult?.salesTotal) {
+                const theaterResult = await queryTheaters(saleResult?.theater_id);
+                console.log(`The best selling theater on ${selectedDate} was ${theaterResult} with a revenue of $${saleResult?.salesTotal}.`);
+            } else {
+                throw new Error("No data for that particular date.");
+            }
+        } catch (error) {
+            console.error("Exception while running main script: ", error);
+        }
+    } else {
+        console.error("You entered an invalid date.");
+    }
+    process.exit(0);
+}
+
+
+
+await main();

@@ -28,3 +28,5 @@ CREATE TABLE SALES (
 );
 
 I then used INSERT queries to insert data for each table.
+
+You can see examples of the output for various input for both programs in the result PNG's.
