@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Movie Trends</title>
+</head>
+
+<body>
+    <h1>Project for Movie Sales Trends!</h1>
+    <form>
+        <label for="date">Enter a date in YYYY-MM-DD format: </label>
+        <input type="text" id="date" name="date"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
+<script>
+    document.querySelector("form").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const selectedDate = document.getElementById("date").value;
+        const result = document.createElement("p");
+        
+
+        try {
+            const response = await fetch("http://localhost:3000/api/bestSeller", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ date: selectedDate })
+            });
+
+            const responseResult = await response.json();
+            console.log("Results: ", responseResult);
+            result.textContent = responseResult.message;
+        } catch (error) {
+            console.error("Error sending selected date", error);
+        }
+
+        document.body.appendChild(result); 
+    });
+</script>
+
+</html>
