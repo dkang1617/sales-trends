@@ -73,6 +73,23 @@ async function main() {
     process.exit(0);
 }
 
-
-
-await main();
+export async function obtainSales(date) {
+    const isValidDate = await validateDate(date);
+    
+    if (isValidDate) {
+        try {
+            const saleResult = await querySales(date);
+            if (saleResult?.theater_id && saleResult?.salesTotal) {
+                const theaterResult = await queryTheaters(saleResult?.theater_id);
+                return(`The best selling theater on ${date} was ${theaterResult} with a revenue of $${saleResult?.salesTotal}.`);
+            } else {
+                throw new Error("No data for that particular date.");
+            }
+        } catch (error) {
+            console.error("Exception while running main script: ", error);
+        }
+    } else {
+        console.error("You entered an invalid date.");
+    }
+    process.exit(0);
+}

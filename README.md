@@ -30,3 +30,7 @@ CREATE TABLE SALES (
 I then used INSERT queries to insert data for each table.
 
 You can see examples of the output for various input for both programs in the result PNG's.
+
+For the optional extension of one of my solutions, I created a very simple web page using Express for the JavaScript solution. You can see it in index.html, app.js, and a screenshot of example output in the WebpageExample.png. For the sake of time, I kept it very light and simplistic, but I chose this webpage to demonstrate that I can and have worked in a full-stack environment. Of course, I could add styling and try to improve on the page, but it was just a small POC to demonstrate that.
+
+Thanks!
